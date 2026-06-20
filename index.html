@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kiosk Helper</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app" data-font-size="large">
+      <header class="topbar">
+        <button class="icon-button" data-action="home" aria-label="홈으로">⌂</button>
+        <div>
+          <p class="eyebrow">AI 키오스크 도우미</p>
+          <h1>Kiosk Helper</h1>
+        </div>
+        <button class="icon-button" data-action="toggle-settings" aria-label="설정">⚙</button>
+      </header>
+
+      <aside class="settings-panel" id="settingsPanel" aria-label="설정">
+        <div class="panel-head">
+          <strong>설정</strong>
+          <button class="ghost-button" data-action="toggle-settings">닫기</button>
+        </div>
+        <label>
+          글자 크기
+          <select id="fontSize">
+            <option value="normal">보통</option>
+            <option value="large" selected>크게</option>
+            <option value="xlarge">아주 크게</option>
+          </select>
+        </label>
+        <label class="switch-row">
+          고대비 화면
+          <input type="checkbox" id="contrastToggle" />
+        </label>
+        <label class="switch-row">
+          음성 안내
+          <input type="checkbox" id="voiceToggle" checked />
+        </label>
+      </aside>
+
+      <main>
+        <section class="screen active" id="home" aria-labelledby="homeTitle">
+          <div class="home-layout">
+            <div class="hero-copy">
+              <p class="eyebrow">메가커피 키오스크 연습</p>
+              <h2 id="homeTitle">말하면, 헬피가 다음 버튼까지 함께 움직여요.</h2>
+              <p>
+                실제 결제 없이 메뉴 선택부터 옵션, 포장, 결제, 영수증 단계까지
+                천천히 연습합니다.
+              </p>
+            </div>
+            <div class="start-actions">
+              <button class="primary-action" data-go="cafe">시작하기</button>
+              <button class="secondary-action" data-action="show-guide">헬피 보기</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" id="cafe" aria-labelledby="cafeTitle">
+          <div class="section-head">
+            <button class="back-button" data-go="home">←</button>
+            <div>
+              <p class="eyebrow">카페 선택</p>
+              <h2 id="cafeTitle">어느 카페에서 연습할까요?</h2>
+            </div>
+          </div>
+          <div class="cafe-grid">
+            <button class="cafe-card mega active-card" data-go="voice">
+              <span class="brand-mark">MEGA</span>
+              <strong>메가MGC커피</strong>
+              <small>사용 가능</small>
+            </button>
+            <button class="cafe-card" disabled>
+              <strong>스타벅스</strong>
+              <small>준비 중</small>
+            </button>
+            <button class="cafe-card" disabled>
+              <strong>투썸플레이스</strong>
+              <small>준비 중</small>
+            </button>
+            <button class="cafe-card" disabled>
+              <strong>이디야커피</strong>
+              <small>준비 중</small>
+            </button>
+          </div>
+        </section>
+
+        <section class="screen" id="voice" aria-labelledby="voiceTitle">
+          <div class="section-head">
+            <button class="back-button" data-go="cafe">←</button>
+            <div>
+              <p class="eyebrow">음성 입력</p>
+              <h2 id="voiceTitle">주문하고 싶은 음료를 말해주세요.</h2>
+            </div>
+          </div>
+          <div class="voice-card">
+            <button class="mic-button" id="micButton" aria-label="음성 입력 시작">
+              <span class="mic-core"></span>
+            </button>
+            <p id="voiceStatus">예: 아이스 아메리카노 주문하고 싶어</p>
+            <textarea id="missionText" rows="2">아이스 아메리카노 주문하고 싶어</textarea>
+            <button class="primary-action" data-go="menu">연습 시작</button>
+          </div>
+        </section>
+
+        <section class="screen simulator" id="menu" aria-labelledby="menuTitle">
+          <div class="sim-header">
+            <div>
+              <p class="eyebrow">1단계 / 메뉴 선택</p>
+              <h2 id="menuTitle">(ICE)아메리카노를 찾아 눌러보세요.</h2>
+            </div>
+            <button class="ghost-button" data-go="home">끝내기</button>
+          </div>
+          <div class="stepper" aria-label="진행 단계">
+            <span class="done">1 메뉴</span><span>2 옵션</span><span>3 확인</span><span>4 결제</span><span>5 완료</span>
+          </div>
+          <div class="kiosk-frame">
+            <img src="images/mega-kiosk-1.png" alt="메가커피 메뉴 선택 키오스크 화면" />
+            <button class="hotspot highlight target-menu" data-go="option" aria-label="아이스 아메리카노 선택"></button>
+            <button class="hotspot pay-guard" data-error="먼저 가운데의 (ICE)아메리카노 메뉴를 눌러주세요." aria-label="결제하기"></button>
+          </div>
+        </section>
+
+        <section class="screen simulator" id="option" aria-labelledby="optionTitle">
+          <div class="sim-header">
+            <div>
+              <p class="eyebrow">2단계 / 옵션 선택</p>
+              <h2 id="optionTitle">옵션이 없다면 주문담기를 누르세요.</h2>
+            </div>
+            <button class="ghost-button" data-go="menu">이전</button>
+          </div>
+          <div class="stepper">
+            <span class="done">1 메뉴</span><span class="done">2 옵션</span><span>3 확인</span><span>4 결제</span><span>5 완료</span>
+          </div>
+          <div class="kiosk-frame">
+            <img src="images/mega-kiosk-2.png" alt="메가커피 옵션 선택 키오스크 화면" />
+            <button class="hotspot option-shot" data-action="toggle-shot" aria-label="샷 추가"></button>
+            <button class="hotspot highlight target-cart" data-go="confirm" aria-label="주문담기"></button>
+          </div>
+        </section>
+
+        <section class="screen simulator" id="confirm" aria-labelledby="confirmTitle">
+          <div class="sim-header">
+            <div>
+              <p class="eyebrow">3단계 / 주문 확인</p>
+              <h2 id="confirmTitle">주문을 확인하고 이용 방법을 고르세요.</h2>
+            </div>
+            <button class="ghost-button" data-go="option">이전</button>
+          </div>
+          <div class="stepper">
+            <span class="done">1 메뉴</span><span class="done">2 옵션</span><span class="done">3 확인</span><span>4 결제</span><span>5 완료</span>
+          </div>
+          <div class="kiosk-frame">
+            <img src="images/mega-kiosk-3.png" alt="메가커피 주문 확인 및 매장 이용 선택 화면" />
+            <button class="hotspot dine-in" data-action="explain" data-message="매장에서 드실 때는 먹고가기를 누릅니다." aria-label="먹고가기"></button>
+            <button class="hotspot highlight takeout" data-go="payment" aria-label="포장하기"></button>
+          </div>
+        </section>
+
+        <section class="screen simulator" id="payment" aria-labelledby="paymentTitle">
+          <div class="sim-header">
+            <div>
+              <p class="eyebrow">4단계 / 결제수단 선택</p>
+              <h2 id="paymentTitle">할인은 건너뛰고 카드결제를 선택해보세요.</h2>
+            </div>
+            <button class="ghost-button" data-go="confirm">이전</button>
+          </div>
+          <div class="stepper">
+            <span class="done">1 메뉴</span><span class="done">2 옵션</span><span class="done">3 확인</span><span class="done">4 결제</span><span>5 완료</span>
+          </div>
+          <div class="kiosk-frame">
+            <img src="images/mega-kiosk-4.png" alt="메가커피 할인 및 결제수단 선택 화면" />
+            <button class="hotspot highlight card-pay" data-go="stamp" aria-label="카드결제"></button>
+          </div>
+        </section>
+
+        <section class="screen simulator" id="stamp" aria-labelledby="stampTitle">
+          <div class="sim-header">
+            <div>
+              <p class="eyebrow">5단계 / 적립 및 계산</p>
+              <h2 id="stampTitle">번호를 눌러 적립하고 승인 요청을 해보세요.</h2>
+            </div>
+            <button class="ghost-button" data-go="payment">이전</button>
+          </div>
+          <div class="kiosk-frame wide">
+            <img src="images/mega-kiosk-5.png" alt="메가커피 적립 및 카드 계산 화면" />
+            <div class="practice-pad" aria-label="가상 번호 입력">
+              <output id="phoneNumber">010-</output>
+              <div class="num-grid">
+                <button data-num="1">1</button><button data-num="2">2</button><button data-num="3">3</button>
+                <button data-num="4">4</button><button data-num="5">5</button><button data-num="6">6</button>
+                <button data-num="7">7</button><button data-num="8">8</button><button data-num="9">9</button>
+                <button data-num="010">010</button><button data-num="0">0</button><button data-action="backspace">←</button>
+              </div>
+              <button class="primary-action compact" data-action="save-stamp">적립</button>
+            </div>
+            <button class="hotspot approve-pay" data-go="complete" aria-label="승인 요청"></button>
+          </div>
+        </section>
+
+        <section class="screen" id="complete" aria-labelledby="completeTitle">
+          <div class="complete-layout">
+            <div class="receipt">
+              <p>MEGA MGC COFFEE</p>
+              <strong>대기번호 350</strong>
+              <span>(ICE)아메리카노 1잔</span>
+              <span id="receiptPrice">2,000원</span>
+            </div>
+            <div>
+              <p class="eyebrow">완료 화면</p>
+              <h2 id="completeTitle">주문 연습을 끝까지 완료했습니다.</h2>
+              <p>실제 결제는 발생하지 않았습니다. 이제 같은 흐름으로 매장에서 천천히 따라할 수 있습니다.</p>
+              <div class="complete-actions">
+                <button class="primary-action" data-go="voice">다시 연습</button>
+                <button class="secondary-action" data-go="home">홈으로</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <div class="helper" aria-live="polite">
+        <div class="helper-note" id="helperBubble">시작하기를 눌러 연습을 시작해요.</div>
+        <div class="helper-beam"></div>
+        <div class="helper-avatar" aria-hidden="true">
+          <span class="helper-hand"></span>
+          <span class="helper-eye left"></span>
+          <span class="helper-eye right"></span>
+          <span class="helper-smile"></span>
+        </div>
+      </div>
+
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
