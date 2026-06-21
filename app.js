@@ -66,7 +66,6 @@ const guides = {
 const speech = window.speechSynthesis;
 const initialScreen = new URLSearchParams(window.location.search).get("screen");
 let currentScreen = screens.some((screen) => screen.id === initialScreen) ? initialScreen : "home";
-let shotAdded = false;
 let toastTimer;
 let recognition;
 
