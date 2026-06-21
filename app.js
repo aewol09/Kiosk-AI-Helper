@@ -242,5 +242,7 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
-initSpeechRecognition();
-goTo(currentScreen);
+document.addEventListener("DOMContentLoaded", () => {
+  initSpeechRecognition();
+  goTo(currentScreen);
+});
