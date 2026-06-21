@@ -116,10 +116,7 @@
           <div class="stepper" aria-label="진행 단계">
             <span class="done">1 메뉴</span><span>2 옵션</span><span>3 확인</span><span>4 결제</span><span>5 완료</span>
           </div>
-          <div class="kiosk-frame">
-            <img src="images/mega-kiosk-1.png" alt="메가커피 메뉴 선택 키오스크 화면" />
-            <button class="hotspot highlight target-menu" data-go="option" aria-label="아이스 아메리카노 선택"></button>
-            <button class="hotspot pay-guard" data-error="먼저 가운데의 (ICE)아메리카노 메뉴를 눌러주세요." aria-label="결제하기"></button>
+          <div class="kiosk-frame" id="menuContainer">
           </div>
         </section>
 
@@ -134,10 +131,12 @@
           <div class="stepper">
             <span class="done">1 메뉴</span><span class="done">2 옵션</span><span>3 확인</span><span>4 결제</span><span>5 완료</span>
           </div>
-          <div class="kiosk-frame">
-            <img src="images/mega-kiosk-2.png" alt="메가커피 옵션 선택 키오스크 화면" />
-            <button class="hotspot option-shot" data-action="toggle-shot" aria-label="샷 추가"></button>
-            <button class="hotspot highlight target-cart" data-go="confirm" aria-label="주문담기"></button>
+          <div class="kiosk-frame" id="optionContainer">
+            <div class="option-group">
+              <strong>옵션 선택</strong>
+              <button class="option-item" data-action="toggle-shot">샷 추가 (+600원)</button>
+            </div>
+            <button class="primary-action full-width" data-go="confirm">주문담기</button>
           </div>
         </section>
 
@@ -152,10 +151,14 @@
           <div class="stepper">
             <span class="done">1 메뉴</span><span class="done">2 옵션</span><span class="done">3 확인</span><span>4 결제</span><span>5 완료</span>
           </div>
-          <div class="kiosk-frame">
-            <img src="images/mega-kiosk-3.png" alt="메가커피 주문 확인 및 매장 이용 선택 화면" />
-            <button class="hotspot dine-in" data-action="explain" data-message="매장에서 드실 때는 먹고가기를 누릅니다." aria-label="먹고가기"></button>
-            <button class="hotspot highlight takeout" data-go="payment" aria-label="포장하기"></button>
+          <div class="kiosk-frame" id="confirmContainer">
+            <div class="order-summary">
+              <strong id="summaryText"></strong>
+            </div>
+            <div class="dine-options">
+              <button class="option-item" data-go="payment">먹고가기</button>
+              <button class="option-item" data-go="payment">포장하기</button>
+            </div>
           </div>
         </section>
 
@@ -170,9 +173,11 @@
           <div class="stepper">
             <span class="done">1 메뉴</span><span class="done">2 옵션</span><span class="done">3 확인</span><span class="done">4 결제</span><span>5 완료</span>
           </div>
-          <div class="kiosk-frame">
-            <img src="images/mega-kiosk-4.png" alt="메가커피 할인 및 결제수단 선택 화면" />
-            <button class="hotspot highlight card-pay" data-go="stamp" aria-label="카드결제"></button>
+          <div class="kiosk-frame" id="paymentContainer">
+            <div class="payment-methods">
+              <button class="option-item" data-go="stamp">신용카드 결제</button>
+              <button class="option-item" data-go="stamp">QR/바코드 결제</button>
+            </div>
           </div>
         </section>
 
@@ -184,9 +189,8 @@
             </div>
             <button class="ghost-button" data-go="payment">이전</button>
           </div>
-          <div class="kiosk-frame wide">
-            <img src="images/mega-kiosk-5.png" alt="메가커피 적립 및 카드 계산 화면" />
-            <div class="practice-pad" aria-label="가상 번호 입력">
+          <div class="kiosk-frame wide" id="stampContainer">
+            <div class="practice-pad" style="position:static; width:100%;">
               <output id="phoneNumber">010-</output>
               <div class="num-grid">
                 <button data-num="1">1</button><button data-num="2">2</button><button data-num="3">3</button>
@@ -194,9 +198,9 @@
                 <button data-num="7">7</button><button data-num="8">8</button><button data-num="9">9</button>
                 <button data-num="010">010</button><button data-num="0">0</button><button data-action="backspace">←</button>
               </div>
-              <button class="primary-action compact" data-action="save-stamp">적립</button>
+              <button class="primary-action compact" data-action="save-stamp" style="width:100%; margin-top:10px;">적립하기</button>
             </div>
-            <button class="hotspot approve-pay" data-go="complete" aria-label="승인 요청"></button>
+            <button class="option-item full-width" data-go="complete" style="margin-top:15px;">결제 승인 요청</button>
           </div>
         </section>
 

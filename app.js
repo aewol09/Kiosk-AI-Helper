@@ -12,6 +12,45 @@ const voiceStatus = document.getElementById("voiceStatus");
 const phoneNumber = document.getElementById("phoneNumber");
 const receiptPrice = document.getElementById("receiptPrice");
 
+// 메뉴 데이터
+const menuData = {
+  coffee: [
+    { id: "ame", name: "(ICE)아메리카노", price: 2000 },
+    { id: "latte", name: "(ICE)카페라떼", price: 2900 },
+    { id: "cappu", name: "(ICE)카푸치노", price: 2900 },
+  ],
+  juice: [
+    { id: "straw", name: "딸기주스", price: 3500 },
+    { id: "orange", name: "오렌지주스", price: 3500 },
+  ],
+};
+
+let selectedItem = null;
+let shotAdded = false;
+
+// 메뉴 렌더링 함수
+function renderMenu() {
+  const container = document.getElementById("menuContainer");
+  if (!container) return;
+  container.innerHTML = "";
+  
+  Object.values(menuData).flat().forEach(item => {
+    const btn = document.createElement("button");
+    btn.className = "menu-item";
+    btn.textContent = item.name;
+    btn.dataset.id = item.id;
+    btn.onclick = () => selectItem(item);
+    container.appendChild(btn);
+  });
+}
+
+function selectItem(item) {
+  selectedItem = item;
+  showToast(`${item.name}이(가) 선택되었습니다.`);
+  updateHelper(`${item.name}을 선택했습니다. 옵션 화면으로 이동합니다.`);
+  goTo("option");
+}
+
 const guides = {
   home: "시작하기를 누르면 제가 버튼 가까이 이동하면서 차례대로 알려드릴게요.",
   cafe: "메가MGC커피 카드로 갈게요. 노란 카드를 눌러주세요.",
@@ -35,9 +74,17 @@ function goTo(id) {
   screens.forEach((screen) => screen.classList.toggle("active", screen.id === id));
   currentScreen = id;
   app.dataset.screen = id;
+  
+  if (id === "menu") renderMenu();
+  
   updateHelper(guides[id]);
+  if (id === "confirm") {
+    const summaryText = document.getElementById("summaryText");
+    summaryText.textContent = `${selectedItem.name} ${shotAdded ? "+ 샷 추가" : ""}`;
+  }
+  
   if (id === "complete") {
-    receiptPrice.textContent = shotAdded ? "2,600원" : "2,000원";
+    receiptPrice.textContent = selectedItem ? `${(selectedItem.price + (shotAdded ? 600 : 0)).toLocaleString()}원` : "2,000원";
   }
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -60,8 +107,9 @@ function showToast(message) {
   toastTimer = setTimeout(() => toast.classList.remove("show"), 2400);
 }
 
-function toggleShot() {
+function toggleShot(btn) {
   shotAdded = !shotAdded;
+  btn.classList.toggle("active", shotAdded);
   const message = shotAdded
     ? "샷 추가를 선택했습니다. 금액이 600원 올라갑니다."
     : "샷 추가를 해제했습니다.";
@@ -145,7 +193,7 @@ document.addEventListener("click", (event) => {
   if (action === "show-guide") {
     updateHelper("헬피가 다음 버튼 가까이 움직입니다. 손이 가리키는 곳을 천천히 눌러주세요.");
   }
-  if (action === "toggle-shot") toggleShot();
+  if (action === "toggle-shot") toggleShot(actionButton);
   if (action === "explain") {
     updateHelper(actionButton.dataset.message);
     showToast(actionButton.dataset.message);
