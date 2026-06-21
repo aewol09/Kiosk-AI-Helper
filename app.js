@@ -243,9 +243,13 @@ window.addEventListener("keydown", (event) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM fully loaded and parsed");
   // data-go 버튼들에 직접 이벤트 할당
-  document.querySelectorAll("[data-go]").forEach(button => {
+  const goButtons = document.querySelectorAll("[data-go]");
+  console.log("Found buttons:", goButtons.length);
+  goButtons.forEach(button => {
     button.addEventListener("click", () => {
+      console.log("Button clicked:", button.dataset.go);
       goTo(button.dataset.go);
     });
   });
