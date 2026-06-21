@@ -243,6 +243,13 @@ window.addEventListener("keydown", (event) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+  // data-go 버튼들에 직접 이벤트 할당
+  document.querySelectorAll("[data-go]").forEach(button => {
+    button.addEventListener("click", () => {
+      goTo(button.dataset.go);
+    });
+  });
+
   initSpeechRecognition();
   goTo(currentScreen);
 });
