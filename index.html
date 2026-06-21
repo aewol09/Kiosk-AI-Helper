@@ -171,36 +171,26 @@
             <button class="ghost-button" data-go="confirm">이전</button>
           </div>
           <div class="stepper">
-            <span class="done">1 메뉴</span><span class="done">2 옵션</span><span class="done">3 확인</span><span class="done">4 결제</span><span>5 완료</span>
+            <span class="done">1 메뉴</span><span class="done">2 옵션</span><span class="done">3 확인</span><span class="done">4 결제</span>
           </div>
           <div class="kiosk-frame" id="paymentContainer">
             <div class="payment-methods">
-              <button class="option-item" data-go="stamp">신용카드 결제</button>
-              <button class="option-item" data-go="stamp">QR/바코드 결제</button>
+              <button class="option-item" data-go="approval">신용카드 결제</button>
+              <button class="option-item" data-go="approval">QR/바코드 결제</button>
             </div>
           </div>
         </section>
 
-        <section class="screen simulator" id="stamp" aria-labelledby="stampTitle">
+        <section class="screen simulator" id="approval" aria-labelledby="approvalTitle">
           <div class="sim-header">
             <div>
-              <p class="eyebrow">5단계 / 적립 및 계산</p>
-              <h2 id="stampTitle">번호를 눌러 적립하고 승인 요청을 해보세요.</h2>
+              <p class="eyebrow">5단계 / 결제 승인</p>
+              <h2 id="approvalTitle">카드를 꽂아주세요.</h2>
             </div>
             <button class="ghost-button" data-go="payment">이전</button>
           </div>
-          <div class="kiosk-frame wide" id="stampContainer">
-            <div class="practice-pad" style="position:static; width:100%;">
-              <output id="phoneNumber">010-</output>
-              <div class="num-grid">
-                <button data-num="1">1</button><button data-num="2">2</button><button data-num="3">3</button>
-                <button data-num="4">4</button><button data-num="5">5</button><button data-num="6">6</button>
-                <button data-num="7">7</button><button data-num="8">8</button><button data-num="9">9</button>
-                <button data-num="010">010</button><button data-num="0">0</button><button data-action="backspace">←</button>
-              </div>
-              <button class="primary-action compact" data-action="save-stamp" style="width:100%; margin-top:10px;">적립하기</button>
-            </div>
-            <button class="option-item full-width" data-go="complete" style="margin-top:15px;">결제 승인 요청</button>
+          <div class="kiosk-frame" id="approvalContainer">
+            <button class="option-item full-width" data-go="complete">결제 승인 요청</button>
           </div>
         </section>
 
