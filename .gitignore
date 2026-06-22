@@ -2,3 +2,13 @@
 *:Zone.Identifier
 .DS_Store
 Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local Database / Session data
+history.json
+

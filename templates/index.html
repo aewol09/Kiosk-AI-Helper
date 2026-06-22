@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>키오스크 도우미 - Kiosk Helper</title>
+    <!-- Google Fonts for premium typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div id="app-container">
+        
+        <!-- ================= MAIN LANDING SCREEN ================= -->
+        <div id="screen-landing" class="app-screen active">
+            <header class="logo-header">
+                <span class="logo-emoji">☕</span>
+                <h1 class="logo-title">키오스크 도우미</h1>
+                <p class="logo-subtitle">천천히 배우고 쉽게 결제하는 연습 프로그램</p>
+            </header>
+
+            <main class="menu-container">
+                <button id="btn-start" class="large-btn btn-green">
+                    <span class="btn-icon">▶</span> 연습 시작하기
+                </button>
+                <button id="btn-show-guide" class="large-btn btn-blue">
+                    <span class="btn-icon">?</span> 사용 방법 배우기
+                </button>
+            </main>
+
+            <footer class="stats-dashboard">
+                <div class="stats-card">
+                    <div class="stats-icon">📊</div>
+                    <div class="stats-content">
+                        <span class="stats-value" id="stats-total-sessions">0회</span>
+                        <span class="stats-label">누적 연습 횟수</span>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-icon" style="color: #d32f2f;">⚠️</div>
+                    <div class="stats-content">
+                        <span class="stats-value" id="stats-avg-mistakes">0.0회</span>
+                        <span class="stats-label">평균 실수 횟수</span>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-icon" style="color: #1976D2;">⏱️</div>
+                    <div class="stats-content">
+                        <span class="stats-value" id="stats-avg-duration">0초</span>
+                        <span class="stats-label">평균 소요 시간</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- ================= BRAND SELECT SCREEN ================= -->
+        <div id="screen-brand-select" class="app-screen">
+            <header class="screen-header">
+                <h2>연습할 브랜드를 선택하세요</h2>
+                <p>간판을 누르면 주문 연습이 시작됩니다.</p>
+            </header>
+
+            <div class="brand-grid">
+                <button id="btn-brand-mega" class="brand-card">
+                    <span class="brand-badge">🟡 커피 연습 가능 🟡</span>
+                    <span class="brand-logo-text">MEGA COFFEE</span>
+                    <span class="brand-name">메가커피</span>
+                </button>
+                <button class="brand-card disabled" disabled>
+                    <span class="brand-badge">준비 중</span>
+                    <span class="brand-logo-text" style="color: #888;">COFFEE BAY</span>
+                    <span class="brand-name">커피베이</span>
+                </button>
+            </div>
+
+            <div class="navigation-footer">
+                <button id="btn-brand-back" class="nav-btn btn-grey">
+                    ◀ 처음 화면으로 돌아가기 (이전)
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= KIOSK SIMULATOR SCREEN ================= -->
+        <div id="screen-simulator" class="app-screen">
+            <!-- Horizontal layout: Left (Interactive Kiosk), Right (AI Assistant Controls) -->
+            <div class="simulator-layout">
+                
+                <!-- 1. LEFT SIDE: THE INTERACTIVE KIOSK PANEL -->
+                <div class="kiosk-outer-frame">
+                    <div class="kiosk-screen-container" id="kiosk-container">
+                        
+                        <!-- Kiosk Header & Step Indicator -->
+                        <div class="kiosk-header">
+                            <div class="kiosk-brand-title">MEGA COFFEE</div>
+                            <!-- 6 Step Progress Dot-line -->
+                            <div class="kiosk-step-indicator">
+                                <span class="step-dot" id="dot-step1" data-step="1">1 메뉴선택</span>
+                                <span class="step-dot" id="dot-step2" data-step="2">2 옵션선택</span>
+                                <span class="step-dot" id="dot-step3" data-step="3">3 주문확인</span>
+                                <span class="step-dot" id="dot-step4" data-step="4">4 매장선택</span>
+                                <span class="step-dot" id="dot-step5" data-step="5">5 결제수단</span>
+                                <span class="step-dot" id="dot-step6" data-step="6">6 결제완료</span>
+                            </div>
+                        </div>
+
+                        <!-- Kiosk Main View Area -->
+                        <div class="kiosk-body" id="kiosk-body-area">
+                            
+                            <!-- [STEP 1: MENU SELECTION VIEW] -->
+                            <div id="kiosk-view-menu" class="kiosk-view active">
+                                <div class="category-tabs" id="kiosk-category-container">
+                                    <!-- Dynamic categories will be generated here -->
+                                </div>
+                                <div class="menu-grid-scroller">
+                                    <div class="menu-grid" id="kiosk-menu-grid">
+                                        <!-- Dynamic menu items will be generated here -->
+                                    </div>
+                                </div>
+                                <!-- Bottom Cart Summary Panel -->
+                                <div class="cart-panel">
+                                    <div class="cart-summary">
+                                        <div class="cart-title">장바구니 조회</div>
+                                        <div class="cart-list" id="kiosk-cart-list">
+                                            <!-- Selected cart items will go here -->
+                                        </div>
+                                    </div>
+                                    <div class="cart-action-bar">
+                                        <div class="total-price-box">
+                                            <span class="total-label">합계:</span>
+                                            <span class="total-value" id="kiosk-total-price">0</span><span class="total-currency">원</span>
+                                        </div>
+                                        <button id="btn-kiosk-checkout" class="kiosk-pay-btn">결제하기</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- [STEP 2: OPTIONS SELECTION VIEW] -->
+                            <div id="kiosk-view-options" class="kiosk-view">
+                                <div class="options-modal">
+                                    <div class="options-header">
+                                        <h3>선택하신 상품의 옵션을 모두 선택해주세요</h3>
+                                        <h2 id="opt-item-name">음료 이름</h2>
+                                    </div>
+                                    <div class="options-body">
+                                        <!-- Option Group 1: Tumbler -->
+                                        <div class="opt-group">
+                                            <div class="opt-group-label">텀블러 사용</div>
+                                            <div class="opt-choices" id="opt-choice-tumbler">
+                                                <button class="choice-btn active" data-val="사용 안함">사용 안함</button>
+                                                <button class="choice-btn" data-val="텀블러 사용 (-300원)">텀블러 사용 (-300원)</button>
+                                            </div>
+                                        </div>
+                                        <!-- Option Group 2: Espresso Shot -->
+                                        <div class="opt-group">
+                                            <div class="opt-group-label">샷 추가</div>
+                                            <div class="opt-choices" id="opt-choice-shot">
+                                                <button class="choice-btn" data-val="연하게">연하게</button>
+                                                <button class="choice-btn active" data-val="기본(2샷)">기본(2샷)</button>
+                                                <button class="choice-btn" id="btn-opt-add-shot" data-val="1샷 추가 (+500원)">1샷 추가 (+500원)</button>
+                                            </div>
+                                        </div>
+                                        <!-- Option Group 3: Sweetness -->
+                                        <div class="opt-group">
+                                            <div class="opt-group-label">당도</div>
+                                            <div class="opt-choices" id="opt-choice-sugar">
+                                                <button class="choice-btn active" data-val="보통">보통</button>
+                                                <button class="choice-btn" data-val="덜 달게">덜 달게</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="options-footer">
+                                        <button id="btn-opt-cancel" class="opt-nav-btn btn-cancel">취소</button>
+                                        <button id="btn-opt-commit" class="opt-nav-btn btn-confirm">주문담기</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- [STEP 3: ORDER CONFIRMATION VIEW] -->
+                            <div id="kiosk-view-confirm" class="kiosk-view">
+                                <div class="confirm-modal">
+                                    <div class="confirm-header">
+                                        <h2>주문 세부 내역을 다시 한번 확인하여주세요</h2>
+                                        <p class="confirm-warning">매장 이용 시 일회용컵 사용이 법적으로 불가합니다.</p>
+                                    </div>
+                                    <div class="confirm-list-container">
+                                        <table class="confirm-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>메뉴명</th>
+                                                    <th>수량</th>
+                                                    <th>가격</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="confirm-items-tbody">
+                                                <!-- Dynamic order rows -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="confirm-summary-row">
+                                        <span>최종 결제 금액</span>
+                                        <span id="confirm-total-price">0원</span>
+                                    </div>
+                                    <div class="confirm-footer">
+                                        <button id="btn-confirm-cancel" class="opt-nav-btn btn-cancel">취소</button>
+                                        <button id="btn-confirm-pay" class="opt-nav-btn btn-confirm">결제하기</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- [STEP 4: EAT-IN / TAKE-OUT SELECTION VIEW] -->
+                            <div id="kiosk-view-eat-option" class="kiosk-view">
+                                <div class="eat-option-container">
+                                    <h2>식사 장소를 선택해주세요</h2>
+                                    <div class="eat-option-buttons">
+                                        <button id="btn-eat-in" class="eat-card">
+                                            <span class="eat-icon">🍽️</span>
+                                            <span class="eat-title">매장 이용 (먹고 가기)</span>
+                                            <span class="eat-desc">매장 내 일회용컵 사용 불가</span>
+                                        </button>
+                                        <button id="btn-take-out" class="eat-card">
+                                            <span class="eat-icon">🛍️</span>
+                                            <span class="eat-title">포장하기 (가져가기)</span>
+                                            <span class="eat-desc">일회용컵 포장 가능</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- [STEP 5: PAYMENT METHOD SELECTION VIEW] -->
+                            <div id="kiosk-view-payment-method" class="kiosk-view">
+                                <div class="payment-method-container">
+                                    <h2>결제수단을 선택해주세요</h2>
+                                    <div class="payment-grid">
+                                        <button id="btn-pay-card" class="pay-method-card">
+                                            <span class="pay-icon">💳</span>
+                                            <span class="pay-title">카드결제</span>
+                                            <span class="pay-desc">신용/체크카드 삼성/L페이</span>
+                                        </button>
+                                        <button class="pay-method-card disabled" disabled>
+                                            <span class="pay-icon">🎟️</span>
+                                            <span class="pay-title">모바일쿠폰</span>
+                                            <span class="pay-desc">메가 쿠폰/바코드</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- [STEP 6: PAYMENT COMPLETION VIEW] -->
+                            <div id="kiosk-view-payment-complete" class="kiosk-view">
+                                <div class="payment-complete-container" id="payment-complete-stage">
+                                    <h2>결제를 위해 신용카드를 넣어주세요</h2>
+                                    <p>아래 카드 넣기 버튼을 누르면 실물이 투입됩니다.</p>
+                                    <div class="card-insertion-simulator">
+                                        <div class="card-slot-reader">CARD READER</div>
+                                        <button id="btn-insert-card" class="insert-card-btn">💳 가상 신용카드 넣기</button>
+                                    </div>
+                                </div>
+
+                                <div class="receipt-container" id="receipt-stage" style="display: none;">
+                                    <h2>결제 및 연습이 완료되었습니다!</h2>
+                                    <div class="receipt-paper">
+                                        <div class="receipt-title">[ 연습 영수증 ]</div>
+                                        <div class="receipt-divider">--------------------------------</div>
+                                        <div class="receipt-details">
+                                            <p><strong>연습 브랜드:</strong> <span id="rec-brand">메가커피</span></p>
+                                            <p><strong>주문한 메뉴:</strong> <span id="rec-menus">아이스 아메리카노</span></p>
+                                            <p><strong>실제 결제액:</strong> 0원 (연습용 가상 결제)</p>
+                                            <p><strong>연습 소요 시간:</strong> <span id="rec-duration">0초</span></p>
+                                            <p><strong>조작 실수 횟수:</strong> <span id="rec-mistakes" style="color: #d32f2f; font-weight: bold;">0회</span></p>
+                                        </div>
+                                        <div class="receipt-divider">--------------------------------</div>
+                                        <div class="receipt-footer">
+                                            참 잘하셨어요! 다음엔 진짜 매장에서도<br>자신 있게 결제해 보세요!
+                                        </div>
+                                    </div>
+                                    <button id="btn-receipt-finish" class="finish-btn">처음 화면으로 돌아가기</button>
+                                </div>
+                            </div>
+
+                        </div> <!-- /kiosk-body-area -->
+
+                        <!-- ================= DYNAMIC FLOATING AI BARISTA ASSISTANT ================= -->
+                        <div id="floating-ai" class="floating-ai-character">
+                            <div class="ai-speech-bubble" id="ai-speech-bubble-kiosk">
+                                <p id="ai-bubble-text">연습을 시작하려면 아래 버튼을 누르세요.</p>
+                            </div>
+                            <div class="ai-avatar-circle">
+                                <span class="ai-avatar-emoji">👈</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 2. RIGHT SIDE: THE AI ASSISTANT PANEL AND UTILITIES -->
+                <div class="sidebar-helper-panel">
+                    <div class="sidebar-section ai-speech-section">
+                        <h3>💬 도우미 선생님의 설명</h3>
+                        <div class="ai-sidebar-bubble">
+                            <p id="ai-sidebar-text">연습을 시작하려면 아래 버튼을 누르세요.</p>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section translator-section">
+                        <h3>🔍 어려운 메뉴 번역기</h3>
+                        <p class="sidebar-info-text">키오스크 메뉴를 누르거나 마우스로 선택하면 쉬운 설명이 여기에 표시됩니다.</p>
+                        <div class="translator-result" id="translator-output">
+                            <span class="translator-placeholder">메뉴를 더블 클릭하거나 선택하여 번역을 실행하세요.</span>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section voice-section">
+                        <h3>🎙️ 말로 주문하기</h3>
+                        <button id="btn-browser-mic" class="mic-start-btn">🎙️ 마이크 켜고 말하기</button>
+                        <div class="mic-status-bar" id="mic-status">마이크 대기 중</div>
+                        
+                        <p class="sidebar-info-text" style="margin-top: 10px;">또는 아래 말하기 예시를 선택하여 시뮬레이션하세요:</p>
+                        <div class="simulation-text-bar">
+                            <input type="text" id="sim-voice-input" placeholder="예: 아이스 아메리카노 주문해줘">
+                            <button id="btn-sim-voice-submit">전송</button>
+                        </div>
+                        <div class="simulation-quick-phrases">
+                            <button class="phrase-btn" data-text="아이스 아메리카노 주문해줘">아이스 아메리카노 주문</button>
+                            <button class="phrase-btn" data-text="샷 추가하고 주문담기 해줘">샷 추가 후 주문담기</button>
+                            <button class="phrase-btn" data-text="포장하기로 선택해줘">포장하기 선택</button>
+                            <button class="phrase-btn" data-text="신용카드로 결제할래">신용카드 결제</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- /simulator-layout -->
+        </div> <!-- /screen-simulator -->
+
+        <!-- ================= HOW TO USE GUIDE DIALOG ================= -->
+        <div id="guide-modal-overlay" class="modal-overlay">
+            <div class="guide-modal-box">
+                <div class="guide-modal-header">
+                    <h2>📖 키오스크 도우미 사용 방법</h2>
+                </div>
+                <div class="guide-modal-body">
+                    <p>저희 '키오스크 도우미'는 키오스크 조작이 어려운 어르신들이 부담 없이 연습할 수 있도록 돕는 학습 사이트입니다.</p>
+                    
+                    <div class="guide-feature-item">
+                        <span class="guide-feature-icon">🧑‍🍳</span>
+                        <div class="guide-feature-content">
+                            <h4>움직이는 AI 캐릭터 도우미</h4>
+                            <p>화면 우측 하단의 AI 바리스타 캐릭터가 각 단계마다 눌러야 할 단추를 향해 직접 이동하여 지시사항을 알려줍니다. 빨간색 테두리와 화살표 가이드를 보고 천천히 따라 누르세요.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-feature-item">
+                        <span class="guide-feature-icon">🎙️</span>
+                        <div class="guide-feature-content">
+                            <h4>말(음성)로 간편 주문</h4>
+                            <p>마이크를 켜고 "아이스 아메리카노 주문해줘", "포장할게", "카드결제" 처럼 자연스럽게 말해보세요. 음성 명령에 맞춰 자동으로 메뉴가 선택되고 다음 단계로 인도됩니다.</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-feature-item">
+                        <span class="guide-feature-icon">🔍</span>
+                        <div class="guide-feature-content">
+                            <h4>쉬운 우리말 번역기</h4>
+                            <p>아인슈페너, 플랫화이트 등 이름이 낯설고 어려운 외래어 메뉴 단추를 누르면, 우측 번역기에 쉬운 한글 뜻풀이가 나옵니다.</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-feature-item">
+                        <span class="guide-feature-icon">📊</span>
+                        <div class="guide-feature-content">
+                            <h4>점수판 기록</h4>
+                            <p>연습이 끝나면 소요 시간과 버튼 실수 횟수가 영수증에 인쇄되며 메인 화면에 누적되어 기록됩니다. 실수를 점차 줄여가는 보람을 느껴보세요!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="guide-modal-footer">
+                    <button id="btn-close-guide" class="finish-btn" style="margin-top: 0;">확인했습니다</button>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- /app-container -->
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
